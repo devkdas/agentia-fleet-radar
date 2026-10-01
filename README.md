@@ -124,6 +124,7 @@ Verified live:
 | `-l, --label <name>` | Display label per dir, repeatable |
 | `--slack-webhook <url>` | Webhook URL for fleet wide alerts, optional |
 | `--ai-suggest` | Plan agent fix suggestion, off by default |
+| `--record` | Append this run to the local history ledger |
 | `-j, --json` | Machine readable JSON fleet document |
 
 ### `agentia fleet notify`
