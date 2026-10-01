@@ -120,11 +120,24 @@ Verified live:
 
 | Flag | Description |
 |---|---|
-| `-d, --dir <path>` | Project directory with one org context, repeatable (required) |
-| `-l, --label <name>` | Display label per dir in order, repeatable |
+| `-d, --dir <path>` | Org context directory, repeatable (required) |
+| `-l, --label <name>` | Display label per dir, repeatable |
 | `--slack-webhook <url>` | Webhook URL for fleet wide alerts, optional |
-| `--ai-suggest` | Plan agent fix suggestion on correlated failures, off by default |
+| `--ai-suggest` | Plan agent fix suggestion, off by default |
 | `-j, --json` | Machine readable JSON fleet document |
+
+### `agentia fleet notify`
+
+| Flag | Description |
+|---|---|
+| `-d, --dir <path>` | Org context directory, repeatable (required) |
+| `-l, --label <name>` | Display label per dir, repeatable |
+| `-w, --webhook <url>` | Webhook URL receiving the digest (required) |
+| `--json` | Machine readable JSON output |
+
+Sends a formatted fleet status digest in plain text with zero AI
+involvement. Deterministic wording every run, delivery confirmed by
+HTTP status with graceful failure that still prints the digest.
 
 Fleet wide means the same check failing in two or more orgs. Alerts
 fire only on fleet wide verdicts.
