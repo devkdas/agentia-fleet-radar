@@ -5,8 +5,9 @@
 [![Agentia 0.122](https://img.shields.io/badge/agentia-0.122.0--alpha.1-blue.svg)](https://developer.copado.com/docs)
 
 **Fleet Radar** checks readiness across org contexts and correlates
-failures into escalate versus fix locally verdicts. One run replaces
-per org debugging with a fleet verdict.
+failures into escalate versus fix locally verdicts, with an incident
+triage command fusing story state, test evidence, blast radius and an
+AI root cause.
 
 Isolated or systemic, answered in one run. Built for the **Agentia
 Headless Virtual Hackathon** as an oclif plugin on top of the public
@@ -97,6 +98,12 @@ agentia fleet check --dir ./proj-a --dir ./proj-b --slack-webhook https://hooks.
 agentia fleet check --dir ./proj-a --dir ./proj-b --ai-suggest --json
 ```
 
+### 4. Triage a production incident
+
+```sh
+agentia fleet incident --dir ./proj-a --dir ./proj-b --story US-0000024 --job 120561 --crt-project 76303
+```
+
 ## Live Demo Workflow
 
 Verified live:
@@ -121,6 +128,20 @@ Verified live:
 
 Fleet wide means the same check failing in two or more orgs. Alerts
 fire only on fleet wide verdicts.
+
+### `agentia fleet incident`
+
+| Flag | Description |
+|---|---|
+| `-d, --dir <path>` | Org context directory, repeatable (required) |
+| `-l, --label <name>` | Display label per dir, repeatable |
+| `-s, --story <id>` | Story under incident for state context |
+| `-j, --job <id>` | CRT job ID for test evidence, repeatable |
+| `--crt-project <id>` | CRT project ID used with job IDs |
+| `--graph-type/--graph-name` | Member for blast radius lookup |
+| `--graph-credential-id/--graph-org-id/--graph-pipeline-id` | Blast scope IDs |
+| `--ai-diagnose` | Operate agent root cause, off by default |
+| `--json` | Machine readable triage document |
 
 ## Configuration
 
