@@ -139,6 +139,27 @@ Sends a formatted fleet status digest in plain text with zero AI
 involvement. Deterministic wording every run, delivery confirmed by
 HTTP status with graceful failure that still prints the digest.
 
+### `agentia fleet trends`
+
+| Flag | Description |
+|---|---|
+| `-l, --ledger <path>` | History ledger file (defaults to the check ledger) |
+| `-w, --weeks <n>` | Weeks of history analyzed (default 4, 1 to 26) |
+| `--json` | Machine readable JSON output |
+
+Reads the local history ledger appended by `fleet check --record` and
+reports per week failure counts plus improving, worsening or flat
+direction. Empty ledger reports honestly instead of inventing history.
+
+### `agentia fleet ledger`
+
+| Flag | Description |
+|---|---|
+| `-j, --json` | Machine readable JSON lines array |
+
+Reads the local history ledger. Entries are appended by `fleet check
+--record`. No delete path exists by design.
+
 Fleet wide means the same check failing in two or more orgs. Alerts
 fire only on fleet wide verdicts.
 

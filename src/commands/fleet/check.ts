@@ -1,5 +1,6 @@
 import {Command, Flags} from '@oclif/core'
 import {execFileSync} from 'node:child_process'
+import {appendLedger} from './ledger.js'
 
 const AI_TIMEOUT_MS = 120_000
 
@@ -73,6 +74,7 @@ export default class FleetCheck extends Command {
     label: Flags.string({char: 'l', description: 'Display label per dir, same order. Repeatable.', multiple: true}),
     'slack-webhook': Flags.string({description: 'Webhook URL for fleet-wide alerts. Optional.'}),
     'ai-suggest': Flags.boolean({description: 'Ask the plan agent for a fix on correlated failures. Off by default.', default: false}),
+    record: Flags.boolean({description: 'Append this run to the local history ledger for trends.', default: false}),
     json: Flags.boolean({char: 'j', description: 'Machine readable JSON summary.', default: false}),
   }
 
@@ -82,6 +84,7 @@ export default class FleetCheck extends Command {
     const labels = (flags.label as string[] | undefined) ?? []
     const webhook = (flags['slack-webhook'] as string | undefined) ?? null
     const aiSuggest = (flags['ai-suggest'] as boolean) ?? false
+    const record = (flags.record as boolean) ?? false
     const asJson = (flags.json as boolean) ?? false
 
     const results: OrgResult[] = dirs.map((dir, i) => checkOrg(labels[i] ?? `org-${i + 1}`, dir))
@@ -144,6 +147,18 @@ export default class FleetCheck extends Command {
       } catch {
         if (!asJson) this.log('Slack notification failed. Terminal verdict above still stands.');
       }
+    }
+
+    if (record) {
+      let failCount = 0
+      for (const [, orgsList] of failIndex) failCount += orgsList.length
+      appendLedger({
+        week: new Date().toISOString().slice(0, 10),
+        orgs: results.map((r) => r.label),
+        failures: failCount,
+        status: payload.status,
+      })
+      if (!asJson) this.log('Recorded to the fleet history ledger.')
     }
 
     if (asJson) {
