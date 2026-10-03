@@ -41,7 +41,7 @@ export default class FleetTrends extends Command {
 
     let entries: any[] = []
     try {
-      const out = runAgentia(['fleet', 'ledger', 'read', '--json'])
+      const out = runAgentia(['fleet', 'ledger', '--json'])
       const parsed = JSON.parse(out)
       entries = Array.isArray(parsed) ? parsed : rowsOf(parsed)
     } catch (error: any) {
